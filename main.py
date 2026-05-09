@@ -1,3 +1,6 @@
+# MAIN ENTRY POINT - RUN THIS FILE TO START THE GAME
+# This file connects the GUI, Logic, and Image Processing.
+
 from gui import MYGUI
 import tkinter as tk
 
