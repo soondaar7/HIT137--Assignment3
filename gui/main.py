@@ -6,97 +6,85 @@ class MYGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Spot the Difference Game")
-        self.root.geometry("1000x650")
-        self.root.configure(bg="#2C3E50")
+        self.root.geometry("1000x700")
+        self.root.configure(bg="#2C3E50") # Dark blue-ish background color
 
-        # ================= TITLE =================
+        # This will hold our game logic later (connected in main.py)
+        self.manager = None 
+
+        # --- TOP TITLE ---
         self.title_label = tk.Label(
             root, text="Spot the Difference Game",
-            font=("Arial", 20, "bold"), bg="#2C3E50", fg="white"
+            font=("Arial", 24, "bold"), bg="#2C3E50", fg="white"
         )
         self.title_label.pack(pady=10)
 
-        # ================= BUTTON FRAME =================
+        # --- BUTTONS AREA ---
         self.button_frame = tk.Frame(root, bg="#2C3E50")
         self.button_frame.pack(pady=10)
 
-        # Load Button
+        # Button to pick an image
         self.load_btn = tk.Button(
             self.button_frame, text="Load Image",
-            font=("Arial", 14, "bold"), bg="#1ABC9C", fg="white",
-            padx=10, pady=5, command=self.load_image
+            font=("Arial", 12, "bold"), bg="#1ABC9C", fg="white",
+            padx=20, command=self.load_image 
         )
         self.load_btn.pack(side="left", padx=10)
 
-        # Reveal Button
+        # Button to show all the answers
         self.reveal_btn = tk.Button(
             self.button_frame, text="Reveal Differences",
             font=("Arial", 12), bg="#E74C3C", fg="white",
-            padx=10, pady=5, command=self.reveal_differences
+            padx=20, command=self.reveal_all
         )
         self.reveal_btn.pack(side="left", padx=10)
 
-        # ================= IMAGE FRAME (NOW USING CANVAS) =================
+        # --- THE TWO IMAGES SIDE BY SIDE ---
         self.image_frame = tk.Frame(root, bg="#2C3E50")
-        self.image_frame.pack(pady=20)
+        self.image_frame.pack(pady=10)
 
-        # Original Image Canvas (Left)
-        self.left_canvas = tk.Canvas(
-            self.image_frame, width=350, height=350, 
-            bg="#34495E", highlightthickness=0
-        )
+        # Left side (The normal image)
+        self.left_canvas = tk.Canvas(self.image_frame, width=350, height=350, bg="#34495E")
         self.left_canvas.pack(side="left", padx=20)
 
-        # Modified Image Canvas (Right)
-        self.right_canvas = tk.Canvas(
-            self.image_frame, width=350, height=350, 
-            bg="#34495E", highlightthickness=0
-        )
+        # Right side (The one we click on)
+        self.right_canvas = tk.Canvas(self.image_frame, width=350, height=350, bg="#34495E")
         self.right_canvas.pack(side="right", padx=20)
 
-        # ================= INFO =================
-        self.remaining = 5
-        self.mistakes = 0
+        # --- STATS AT THE BOTTOM (Score & Mistakes) ---
+        self.stats_frame = tk.Frame(root, bg="#2C3E50")
+        self.stats_frame.pack(pady=10)
 
-        self.info_label = tk.Label(
-            root, text=f"Remaining: {self.remaining} | Mistakes: {self.mistakes}",
-            font=("Arial", 14, "bold"), bg="#2C3E50", fg="#F1C40F"
+        self.label_remaining = tk.Label(
+            self.stats_frame, text="Remaining: 5",
+            font=("Arial", 14), bg="#2C3E50", fg="#F1C40F"
         )
-        self.info_label.pack(pady=15)
+        self.label_remaining.pack(side="left", padx=30)
 
-    # ================= LOAD IMAGE =================
+        self.label_mistakes = tk.Label(
+            self.stats_frame, text="Mistakes: 0/3",
+            font=("Arial", 14), bg="#2C3E50", fg="#E67E22"
+        )
+        self.label_mistakes.pack(side="left", padx=30)
+
+    # --- HELPER STUFF ---
+
+    def draw_circle(self, x, y, color="red"):
+        """ This draws circles on both pictures when we find something """
+        for canvas in [self.left_canvas, self.right_canvas]:
+            # Drawing a circle at the (x, y) coordinates
+            canvas.create_oval(x-15, y-15, x+15, y+15, outline=color, width=3)
+
+    def update_display(self, mistakes, remaining):
+        """ Just updates the text labels on the screen so we can see the score """
+        self.label_mistakes.config(text=f"Mistakes: {mistakes}/3")
+        self.label_remaining.config(text=f"Remaining: {remaining}")
+
     def load_image(self):
-        file_path = filedialog.askopenfilename(
-            filetypes=[("Image files", "*.jpg *.png *.bmp")]
-        )
+        """ Opens the file browser so we can pick a picture """
+        file_path = filedialog.askopenfilename(filetypes=[("Images", "*.jpg *.png *.bmp")])
+        return file_path
 
-        if file_path:
-            # Open and force resize to 350x350 so coordinates ALWAYS match
-            img = Image.open(file_path).resize((350, 350))
-            self.tk_image = ImageTk.PhotoImage(img)
-
-            # Clear old drawings/images
-            self.left_canvas.delete("all")
-            self.right_canvas.delete("all")
-
-            # Place images on Canvases
-            self.left_canvas.create_image(0, 0, anchor="nw", image=self.tk_image)
-            self.right_canvas.create_image(0, 0, anchor="nw", image=self.tk_image)
-            
-            # Keep a reference to prevent garbage collection
-            self.left_canvas.image = self.tk_image
-            self.right_canvas.image = self.tk_image
-
-    def reveal_differences(self):
-        # Student C will override this in logic_manager.py
+    def reveal_all(self):
+        """ This is a placeholder, we'll code the reveal logic in main.py """
         pass
-
-    def update_info(self):
-        self.info_label.config(
-            text=f"Remaining: {self.remaining} | Mistakes: {self.mistakes}"
-        )
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = MYGUI(root)
-    root.mainloop()

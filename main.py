@@ -3,7 +3,7 @@
 
 import tkinter as tk
 from gui.main import MYGUI 
-from logic.logic_manager import CoordinateChecker, GameManager
+from core.logic_manager import CoordinateChecker, GameManager
 
 if __name__ == "__main__":
     # 1. Start the Tkinter root
