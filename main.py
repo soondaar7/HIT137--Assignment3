@@ -3,13 +3,12 @@
 
 import tkinter as tk
 from gui.main import MYGUI 
-from core.logic_manager import CoordinateChecker, GameManager
+from logic.logic_manager import CoordinateChecker, GameManager
 
 if __name__ == "__main__":
     # 1. Start the Tkinter root
     root = tk.Tk()
     
-    # 2. Initialize  GUI
     gui_app = MYGUI(root)
     
     # 3. Initialize  Logic Classes
