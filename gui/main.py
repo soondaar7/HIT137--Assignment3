@@ -70,21 +70,21 @@ class MYGUI:
     # --- HELPER STUFF ---
 
     def draw_circle(self, x, y, color="red"):
-        """ This draws circles on both pictures when we find something """
+        #This draws circles on both pictures when we find something
         for canvas in [self.left_canvas, self.right_canvas]:
             # Drawing a circle at the (x, y) coordinates
             canvas.create_oval(x-15, y-15, x+15, y+15, outline=color, width=3)
 
     def update_display(self, mistakes, remaining):
-        """ Just updates the text labels on the screen so we can see the score """
+        #Just updates the text labels on the screen so we can see the score
         self.label_mistakes.config(text=f"Mistakes: {mistakes}/3")
         self.label_remaining.config(text=f"Remaining: {remaining}")
 
     def load_image(self):
-        """ Opens the file browser so we can pick a picture """
+        # Opens the file browser so we can pick a picture
         file_path = filedialog.askopenfilename(filetypes=[("Images", "*.jpg *.png *.bmp")])
         return file_path
 
     def reveal_all(self):
-        """ This is a placeholder, we'll code the reveal logic in main.py """
+        #This is a placeholder, we'll code the reveal logic in main.py
         pass

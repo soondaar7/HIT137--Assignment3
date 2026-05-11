@@ -10,7 +10,7 @@ from core.game_manager import GameManager
 from logic.image_processor import ImageProcessor
 
 def start_game():
-    """ This function handles picking the photo and starting the round """
+    #This function handles picking the photo and starting the round 
     path = gui.load_image()
     if not path:
         return
@@ -36,7 +36,7 @@ def start_game():
     gui.update_display(gui.manager.mistakes, 5)
 
 def click_handler(event):
-    """ This runs every time someone clicks the right-side image """
+    #This runs every time someone clicks the right-side image
     # Don't do anything if they already lost
     if gui.manager.mistakes >= 3:
         return
@@ -52,12 +52,12 @@ def click_handler(event):
 
     # Check if the game is over or if they won
     if len(gui.manager.found_list) == 5:
-        messagebox.showinfo("Victory!", "Awesome! You found all 5 differences.")
+        messagebox.showinfo("Victory!", "Awesome! You found all 5 differences.\n\nYou can now load another image to continue playing!")
     elif gui.manager.mistakes >= 3:
-        messagebox.showwarning("Game Over", "3 mistakes! Click 'Reveal' to see the ones you missed.")
+        messagebox.showwarning("Game Over", "3 mistakes! Click 'Reveal' to see the ones you missed, then you can load a new image to restart.")
 
 def reveal_logic():
-    """ Shows blue circles for any differences they didn't find """
+    #Shows blue circles for any differences they didn't find
     for target in gui.manager.targets:
         if target not in gui.manager.found_list:
             gui.draw_circle(target[0], target[1], "blue")
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # Standard Tkinter setup
     root = tk.Tk()
     
-    # --- Initialize the different parts of the project ---
+    # Initialize the different parts of the project
     gui = MYGUI(root)
     processor = ImageProcessor()
     
@@ -74,11 +74,11 @@ if __name__ == "__main__":
     checker = CoordinateChecker(threshold=30)
     gui.manager = GameManager(checker)
 
-    # --- SHOWING OFF POLYMORPHISM (For the Teacher) ---
+    # SHOWING OFF POLYMORPHISM
     print(checker.get_status()) # Prints MathEngine status
     print(gui.manager.get_status()) # Prints Referee status
 
-    # --- Linking buttons and clicks ---
+    #Linking buttons and clicks
     gui.load_btn.config(command=start_game)
     gui.reveal_btn.config(command=reveal_logic)
     gui.right_canvas.bind("<Button-1>", click_handler)

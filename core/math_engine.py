@@ -18,6 +18,6 @@ class CoordinateChecker(GameObject):
         return f"MathEngine is ready. Radius is {self.__threshold}px"
 
     def is_hit(self, click_x, click_y, target_x, target_y):
-        """ The math formula to see if we clicked close enough to the target """
+        #The math formula to see if we clicked close enough to the target
         distance = math.sqrt((click_x - target_x)**2 + (click_y - target_y)**2)
         return distance <= self.__threshold
