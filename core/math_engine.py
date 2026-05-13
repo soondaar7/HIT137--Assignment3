@@ -9,8 +9,7 @@ class CoordinateChecker(GameObject):
     def __init__(self, threshold=30):
         # This tells the parent class its name is MathEngine
         super().__init__("MathEngine") 
-        # This is a private variable (Encapsulation) 
-        # so other files can't mess with it
+        # This is a private variable (Encapsulation),so other files can't mess with it
         self.__threshold = threshold    
 
     def get_status(self):

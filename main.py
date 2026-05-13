@@ -11,9 +11,9 @@ from logic.image_processor import ImageProcessor
 
 def start_game():
     """
-    Cleans up old game state and handles picking a new photo.
+    #Cleans up old game state and handles picking a new photo.
     """
-    # 1. CLEANUP: Wipe the canvases so old red/blue circles disappear
+    # 1.Wipe the canvases so old red/blue circles disappear
     gui.left_canvas.delete("all")
     gui.right_canvas.delete("all")
     
@@ -22,12 +22,12 @@ def start_game():
     if not path:
         return
 
-    # 3. Process the image (Student B's logic)
+    # 3. Process the image
     # Resizing to match the canvas dimensions
     original_pil = Image.open(path).resize((350, 350))
     modified_pil, coords = processor.create_modified_image(original_pil)
 
-    # 4. Convert and keep references so images don't disappear (Garbage Collection)
+    # 4. Convert and keep references so images don't disappear
     gui.tk_orig = ImageTk.PhotoImage(original_pil)
     gui.tk_mod = ImageTk.PhotoImage(modified_pil)
     
@@ -60,20 +60,18 @@ def click_handler(event):
     # Update score and mistakes display
     gui.update_display(gui.manager.mistakes, 5 - len(gui.manager.found_list))
 
-    # --- VICTORY CONDITION ---
+    #VICTORY CONDITION
     if len(gui.manager.found_list) == 5:
         # Ask to play again immediately
-        play_again = messagebox.askyesno("Victory!", 
-            "Awesome! You found all 5 differences.\n\nWould you like to play again with a new image?")
+        play_again = messagebox.askyesno("Victory!", "Awesome! You found all 5 differences.\n\nWould you like to play again with a new image?")
         if play_again:
             start_game()
         else:
             root.destroy()
 
-    # --- FAILURE CONDITION ---
+    #FAILURE CONDITION
     elif gui.manager.mistakes >= 3:
-        messagebox.showwarning("Game Over", 
-            "3 mistakes! Click 'Reveal Differences' to see the ones you missed.")
+        messagebox.showwarning("Game Over", "3 mistakes! Click 'Reveal Differences' to see the ones you missed.")
 
 def reveal_logic():
     """
@@ -115,7 +113,7 @@ if __name__ == "__main__":
     checker = CoordinateChecker(threshold=30)
     gui.manager = GameManager(checker)
 
-    # Optional: Log status for debugging/polymorphism demonstration
+    #Log status for debugging/polymorphism demonstration
     print(checker.get_status())
     print(gui.manager.get_status())
 
