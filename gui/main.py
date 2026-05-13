@@ -12,6 +12,10 @@ class MYGUI:
         # This will hold our game logic later (connected in main.py)
         self.manager = None 
 
+        # Store image references
+        self.left_img = None
+        self.right_img = None
+
         # --- TOP TITLE ---
         self.title_label = tk.Label(
             root, text="Spot the Difference Game",
@@ -38,6 +42,18 @@ class MYGUI:
             padx=20, command=self.reveal_all
         )
         self.reveal_btn.pack(side="left", padx=10)
+
+        # Reset button
+        self.reset_btn = tk.Button(
+            self.button_frame,
+            text="Reset",
+            font=("Arial", 12, "bold"),
+            bg="#3498DB",
+            fg="white",
+            padx=20,
+            command=self.reset_game
+        )
+        self.reset_btn.pack(side="left", padx=10)
 
         # --- THE TWO IMAGES SIDE BY SIDE ---
         self.image_frame = tk.Frame(root, bg="#2C3E50")
@@ -88,3 +104,16 @@ class MYGUI:
     def reveal_all(self):
         #This is a placeholder, we'll code the reveal logic in main.py
         pass
+
+    def reset_game(self):
+        # Clear both canvases
+        self.left_canvas.delete("all")
+        self.right_canvas.delete("all")
+
+        # Remove stored images
+        self.left_img = None
+        self.right_img = None
+
+        # Reset labels
+        self.label_remaining.config(text="Remaining: 5")
+        self.label_mistakes.config(text="Mistakes: 0/3")
